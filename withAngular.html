@@ -1,0 +1,68 @@
+<html ng-app="app">
+<head>
+	<meta charset="UTF-8">
+	<title>Tweet Box</title>
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<script type="text/javascript" src="js/angular.js"></script>
+	<script type='text/ng-template' id='tpl-tweetBox'>
+		<div class="well clearfix">
+			<textarea class="form-control" ng-model="text"></textarea>
+			{{ remainingCharacters() }}
+			<button class="btn btn-primary pull-right" ng-disabled="remainingCharacters() === 140">
+				<span class="glyphicon glyphicon-edit"></span>&nbsp;Tweet
+			</button>
+			<button class="btn btn-default pull-right" ng-click="togglePhoto()">
+				<span class="glyphicon glyphicon-picture"></span>&nbsp;
+				{{ photoAdded ? 'Photo Added' : 'Add Photo' }}
+			</button>
+		</div>
+	</script>
+	<script>
+		var app = angular.module('app', []);
+		app.controller('MainController', function($scope) {
+			$scope.tweets = [
+				{ text: '' },
+				{ text: '' },
+				{ text: '' },
+				{ text: '' },
+				{ text: '' }
+			];
+		});
+
+		app.directive('tweetBox', function() {
+			return {
+				scope: {
+					text: '='
+				},
+				retrict: 'E',
+				templateUrl: 'tpl-tweetBox',
+				link: function(scope) {
+					scope.photoAdded = false;
+					scope.remainingCharacters = function () {
+						if(scope.photoAdded)
+							return 140 - 23 - scope.text.length;
+						else
+							return 140 - scope.text.length;
+					};
+
+					scope.togglePhoto = function () {
+						scope.photoAdded = !scope.photoAdded;
+					};
+				}
+			};
+		});
+	</script>
+</head>
+<body ng-controller="MainController">
+	<div class="container">
+		<div class="row" ng-repeat="tweet in tweets">
+			<div class="col-md-offset-3 col-md-6">
+				<tweet-box text="tweet.text" />	
+			</div>
+			<div class="col-md-3">
+				{{ tweet.text }}
+			</div>
+		</div>
+	</div>
+</body>
+</html>
