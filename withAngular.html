@@ -20,13 +20,7 @@
 	<script>
 		var app = angular.module('app', []);
 		app.controller('MainController', function($scope) {
-			$scope.tweets = [
-				{ text: '' },
-				{ text: '' },
-				{ text: '' },
-				{ text: '' },
-				{ text: '' }
-			];
+			$scope.text = '';
 		});
 
 		app.directive('tweetBox', function() {
@@ -55,12 +49,9 @@
 </head>
 <body ng-controller="MainController">
 	<div class="container">
-		<div class="row" ng-repeat="tweet in tweets">
+		<div class="row">
 			<div class="col-md-offset-3 col-md-6">
-				<tweet-box text="tweet.text" />	
-			</div>
-			<div class="col-md-3">
-				{{ tweet.text }}
+				<tweet-box text="text" />	
 			</div>
 		</div>
 	</div>
